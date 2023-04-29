@@ -7,5 +7,30 @@
 	</head>
 	<body>
 		<h1>Web wc</h1>
+
+		<p id="word-count-output">0</p>
+
+		<textarea id="text-input" cols="30" rows="10"></textarea>
 	</body>
 </html>
+
+<script is:inline>
+function findWordCount() {
+	const text = document.getElementById("text-input");
+
+	const textValue = text.value;
+	const words = textValue.split(' ');
+	const wordCount = words.length;
+
+	return wordCount;
+}
+
+document.getElementById("text-input").addEventListener("input", () => {
+	const wordCount = findWordCount();
+
+	const output = document.getElementById("word-count-output");
+	if (output) {
+		output.innerText = wordCount.toString();
+	}
+});
+</script>
