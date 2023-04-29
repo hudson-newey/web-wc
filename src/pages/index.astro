@@ -1,36 +1,68 @@
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Web wc</title>
-	</head>
-	<body>
-		<h1>Web wc</h1>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Web wc</title>
+  </head>
+  <body>
+    <h1>Web wc</h1>
 
-		<p id="word-count-output">0</p>
+    <p id="word-count-output">Words: 0</p>
+	<p id="character-count-output">Characters: 0</p>
 
-		<textarea id="text-input" cols="30" rows="10"></textarea>
-	</body>
+    <textarea id="text-input" cols="30" rows="10"></textarea>
+  </body>
+
+  <footer>
+	Notice: This is just a project I created to learn Astro.js and should not be used in any serious project<br>
+  </footer>
 </html>
 
-<script is:inline>
-function findWordCount() {
-	const text = document.getElementById("text-input");
+<script>
+  const text = document.getElementById("text-input") as HTMLTextAreaElement;
+  function textInputValue(): string {
+	if (text === undefined || text === null) {
+	  return "";
+	}
 
 	const textValue = text.value;
-	const words = textValue.split(' ');
-	const wordCount = words.length;
 
-	return wordCount;
-}
-
-document.getElementById("text-input").addEventListener("input", () => {
-	const wordCount = findWordCount();
-
-	const output = document.getElementById("word-count-output");
-	if (output) {
-		output.innerText = wordCount.toString();
+	if (textValue === undefined || textValue === null) {
+	  return "";
 	}
-});
+
+	return textValue;
+  }
+
+  function findWordCount(): string {
+	const textValue = textInputValue();
+    const textValueMatch = textValue.match(/\w+/g);
+
+    if (textValueMatch === null) {
+      return "0";
+    }
+
+    const wordCount = textValueMatch.length.toString();
+
+    return wordCount;
+  }
+
+  function findCharacterCount(): string {
+	const textValue = textInputValue();
+	return textValue.length.toString();
+  }
+
+  document.getElementById("text-input")?.addEventListener("input", () => {
+    const wordCount = findWordCount();
+	const characterCount = findCharacterCount();
+
+    const wordsOutput = document.getElementById("word-count-output");
+	const charactersOutput = document.getElementById("character-count-output");
+
+    if (wordsOutput && charactersOutput) {
+      wordsOutput.innerText = `Words: ${wordCount}`;
+	  charactersOutput.innerText = `Characters: ${characterCount}`;
+    }
+  });
 </script>
